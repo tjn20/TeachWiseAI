@@ -1,0 +1,40 @@
+
+
+
+
+.chat-message {
+  background-color: #f7f7f8; /* Chat bubble background */
+  color: #333; /* Text color */
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+}
+
+.code-block-container {
+  background-color: #2d2d2d; /* Dark background for code blocks */
+  border: 1px solid #444; /* Border for code block */
+  border-radius: 8px; /* Rounded corners */
+  padding: 12px;
+  margin: 12px 0;
+  overflow-x: auto; /* Horizontal scrolling for long code */
+}
+
+.code-block-container pre {
+  margin: 0;
+}
+
+.code-block-container code {
+  font-family: 'Fira Code', monospace; /* Monospace font for code */
+  color: #f8f8f2; /* Text color for code */
+}
+
+.chat-message code {
+  background-color: #eaecef; /* Inline code background */
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: 'Fira Code', monospace; /* Monospace font */
+  font-size: 90%; /* Slightly smaller font size */
+  color: #d6336c; /* Inline code text color */
+}
