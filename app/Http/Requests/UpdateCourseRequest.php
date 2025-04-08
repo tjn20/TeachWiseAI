@@ -54,7 +54,7 @@ class UpdateCourseRequest extends FormRequest
             "students"=>['sometimes','array',new StudentRemoval($course)],
             "students.file" => ["nullable","sometimes","file", "mimes:csv,txt", "max:{$MAX_STUDENT_FILE_SIZE}"],
             "students.studentsId" => ["sometimes", "array"],
-            "students.studentsId.*"=>"integer|min:7|max:",
+            "students.studentsId.*"=>"numeric|digits_between:7,12",
             "students.removedEnrolledStudentIds"=> "sometimes|array",
             "students.removedEnrolledStudentIds.*"=>['integer',Rule::exists('enrollements','user_id')->where('course_id',$course->id)],
             "students.removedWaitlistedStudentIds"=> "sometimes|array",

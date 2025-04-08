@@ -48,7 +48,7 @@ class StoreCourseRequest extends FormRequest
             "students"=>'required|array',
             "students.file" => ["nullable","sometimes","required_without:students.studentsId","file", "mimes:csv,txt", "max:{$MAX_STUDENT_FILE_SIZE}"],
             "students.studentsId" => ["sometimes", "array", "min:1", "required_without:students.file"],
-            "students.studentsId.*"=>"numeric|min:7|max:9"
+            "students.studentsId.*"=>"numeric|digits_between:7,12"
         ]; 
     }
 

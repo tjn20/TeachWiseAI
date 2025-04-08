@@ -3,7 +3,8 @@
 namespace App\Http\Requests\Auth;
 
 use App\Rules\EmailDomain;
-use App\Rules\EmailUsername;
+use App\Rules\InstructorEmailUsername;
+use App\Rules\StudentEmailUsername;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
@@ -40,9 +41,17 @@ class RegisterRequest extends FormRequest
 
     public function withValidator($validator)
     {
-        $validator->sometimes('email',new EmailUsername(),function($input){
-            return $input->role == 'student';
-        });
+        $validator->sometimes('email', $this->roleBasedEmailRule(), fn($input) => $input->role);
     }
+
+    private function roleBasedEmailRule()
+    {
+        return match(request()->role) {
+            'student'    => new StudentEmailUsername(),
+            'instructor' => new InstructorEmailUsername(),
+            default      => null,
+        };
+    }
+
 }
 

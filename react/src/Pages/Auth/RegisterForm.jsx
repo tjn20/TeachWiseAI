@@ -64,7 +64,17 @@ export default function RegisterForm() {
       }  
       return true
     },{
-      message:"The email username must be a numeric value between 7 and 12 digits long.",
+      message:"The username must be a numeric value between 7 and 12 digits long.",
+      path:["email"]
+    })
+    .refine(fields=>{
+      if(fields.role === "instructor")
+      {
+        const emailUsername = fields.email.split('@')[0]
+        return /^[A-Za-z.]+$/.test(emailUsername)
+      }
+    },{
+      message:"The username may only contain letters and periods.",
       path:["email"]
     })
    
