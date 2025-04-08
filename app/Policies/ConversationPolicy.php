@@ -41,11 +41,11 @@ class ConversationPolicy
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can clear the conversation messages.
      */
     public function delete(User $user, Conversation $conversation): bool
     {
-        return false;
+        return $conversation->user_id === $user->id;
     }
 
     /**

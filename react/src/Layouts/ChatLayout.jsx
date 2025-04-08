@@ -18,6 +18,7 @@ import { Loader } from "lucide-react"
 import axios from "axios"
 import { useEventBus } from "../Context/EventProvider"
 import { Helmet } from "react-helmet-async"
+import { toast } from "sonner"
 export default function ChatLayout() {
   const {user,handleSessionTimeOut} = useAuth()
   const [courses,setCourses] = useState([])
@@ -27,7 +28,7 @@ export default function ChatLayout() {
   const {id:conversationId} = useParams()
   const [conversationData,setConversationData] = useState(null)
   const controllerRef = useRef(null);
-
+  const [isConversationBeingCleared,setIsConversationBeingCleared] = useState(false)
   useEffect(() => {
     if (!conversationId) return;
     
@@ -106,6 +107,34 @@ export default function ChatLayout() {
     }
   };
 
+  const handleClearConversation = (conversation) => {
+    if (isConversationBeingCleared || conversationData?.messages.length < 1) return
+    const previousMessages = conversationData.messages
+  
+    setIsConversationBeingCleared(true)
+    setConversationData(prev => ({
+      ...prev,
+      messages: []
+    }))
+  
+    axiosClient.delete(`/conversations/${conversation.url}`)
+      .then(() => {
+        toast.success(`${conversation.title} conversation has been cleared!`)
+      })
+      .catch((error) => {
+        handleSessionTimeOut(error)
+        toast.error(`Failed to clear conversation.`)
+  
+        setConversationData(prev => ({
+          ...prev,
+          messages: previousMessages
+        }))
+      })
+      .finally(() => {
+        setIsConversationBeingCleared(false)
+      })
+  }
+  
   
   return (
     <>
@@ -113,7 +142,7 @@ export default function ChatLayout() {
       <title>{conversationData ? conversationData.course_title : "Loading..."}</title>
     </Helmet>
     <SidebarProvider>  
-        <AppSidebar user={user} courses={courses} activeCourseId={conversationData?.course_id} isCoursesLoading={isSidebarCoursesLoading}/>
+        <AppSidebar user={user} courses={courses} onConversationClear={handleClearConversation} activeCourseId={conversationData?.course_id} isCoursesLoading={isSidebarCoursesLoading}/>
         <SidebarInset className="z-0 h-svh"> {/* #e5e7eb */}
         <header className="flex sticky top-0 h-16 shrink-0 items-center gap-2 border-b px-4 z-20 bg-sidebarInset dark:border-b-sidebarInset-border">
           <SidebarTrigger className="-ml-1 dark:text-white" />

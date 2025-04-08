@@ -28,7 +28,8 @@ export function AppSidebar({
   user,
   courses,
   isCoursesLoading,
-  activeCourseId
+  activeCourseId,
+  onConversationClear
 }) {
   const {theme,setTheme } = useTheme()
 
@@ -84,6 +85,11 @@ export function AppSidebar({
       items: courses
     }
   ]
+
+  const onConversationClearClick = (id) => {
+    alert(id)
+  }
+
   return (
     <Sidebar side={side} variant={variant} collapsible="icon" className="dark:group-data-[side=left]:border-r-sidebar-secondaryBorder">
        <SidebarHeader>
@@ -115,7 +121,7 @@ export function AppSidebar({
         </SidebarMenu>
       {isCoursesLoading ? <div className="pt-[100%]">
         <Loader size={10} className="animate-spin m-auto" />
-      </div>: <NavCourses items={navCourses} activeCourseId={activeCourseId} />}
+      </div>: <NavCourses items={navCourses} onConversationClear={onConversationClear} activeCourseId={activeCourseId} />}
       </SidebarGroupContent>
     </SidebarGroup>
     <NavSecondary items={data.navSecondary} className="mt-auto"/>

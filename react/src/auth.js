@@ -2,6 +2,7 @@ const ROLES = {
     student:[
         "view:courses",
         "view:course-conversation",
+        "clear:conversation"
     ],
     instructor:[
         "view:courses",
@@ -10,7 +11,8 @@ const ROLES = {
         "create:course",
         "delete:course",
         "edit:course",
-        "view:source"
+        "view:source",
+        "clear:conversation"
     ]
     
 }

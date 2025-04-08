@@ -39,11 +39,13 @@ class ConversationController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the conversation messages.
      */
-    public function destroy(string $id)
+    public function destroy(Conversation $conversation)
     {
-        //
+        $this->authorize('delete',$conversation);
+        $conversation->messages()->delete();
+        return response()->noContent();
     }
 
     public function getMessages(Request $request,$conversationId)

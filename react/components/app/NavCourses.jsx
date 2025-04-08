@@ -1,5 +1,5 @@
 
-import { ChevronRight } from "lucide-react"
+import { ChevronRight, MoreHorizontal, Trash2 } from "lucide-react"
 import {Link} from 'react-router-dom'
 import {
   Collapsible,
@@ -10,17 +10,25 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
+  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "../ui/sidebar"
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+ } from "../ui/dropdown-menu"
 import { Button } from "../ui/button"
 
 export function NavCourses({
-  items,activeCourseId
+  items,activeCourseId ,onConversationClear
 }) {
+
   return (
       <SidebarMenu>
         {items.map((item) => (
@@ -40,14 +48,27 @@ export function NavCourses({
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <SidebarMenuSub>
-                  {item.items?.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.id}>
-                      <SidebarMenuSubButton asChild isActive={subItem.id === activeCourseId}>
+                  {item.items?.map((subItem,index) => (
+                    <SidebarMenuSubItem key={index} className={`flex items-center justify-between hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-lg h-8 ${subItem.id === activeCourseId && "bg-sidebar-accent text-sidebar-accent-foreground"}`}>
+                      <SidebarMenuSubButton asChild className="flex-1 hover:bg-none h-full">
                         {<Link   to={subItem.url && `/chat/${subItem.url}`}> 
                           <span>{subItem.title}</span>
                         </Link>
                         }
                       </SidebarMenuSubButton>
+                      {subItem.id === activeCourseId && <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                      <Button type="button" size="sm" variant="none" className="focus:border-none focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0">
+                      <MoreHorizontal  />
+                      </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent side="right" align="start">
+                        <DropdownMenuItem onClick={()=>onConversationClear(subItem)}>
+                          <Trash2 color="red"/>
+                          <span>Clear Conversation</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>}
                     </SidebarMenuSubItem>
                   ))}
                 </SidebarMenuSub>
