@@ -46,7 +46,6 @@ export default function EditCourse() {
     useEffect(()=>{
         axiosClient.get(`/course/${slug}`)
         .then(({data})=>{
-          console.log(data)
          setCourse(data)
          setIsCourseLoading(false)
         }).catch(error=>{
@@ -167,6 +166,16 @@ export default function EditCourse() {
           );
       }
 
+      const restoreRemovedCourseFile = () => {
+        form.setValue(
+          "removedFileIds",
+          [],
+          {
+            shouldValidate:true
+          })
+      }
+
+
       const toggleEnrolledStudentsSelect = (id) => {
         setSelectedEnrolledStudents((prev)=>{
             const newSet = new Set(prev); 
@@ -199,7 +208,6 @@ export default function EditCourse() {
             shouldValidate:true
         })
       }
-
 
       const toggleWaitlistedStudentsSelect = (id) => {
         setSelectedWaitlistedStudents((prev)=>{
@@ -313,7 +321,7 @@ export default function EditCourse() {
     <div className="flex-1 flex flex-col dark:bg-main">
         {isCourseLoading && (
             <span className="flex items-center flex-1 self-center">
-                <HashLoader size={30} className="items-center justify-center" color={theme === "light" ? "black" : "white"}  />
+                <HashLoader size={30} className="items-center justify-center " color={theme === "light" ? "black" : "white"}  />
             </span>
         )}
         {!isCourseLoading && (<>
@@ -372,9 +380,23 @@ export default function EditCourse() {
             </FormItem>
           
           </div>}
-        {((courseContentFiles.length + course.files.length > removedFileIdsArray.length )) && <div className="flex flex-col gap-3 animate-in fade-in-0 duration-500">
+        {((courseContentFiles.length + course.files.length > removedFileIdsArray.length || removedFileIdsArray.length > 0 )) && <div className="flex flex-col gap-3 animate-in fade-in-0 duration-500">
           <Separator className="my-7 w-[90%] mx-auto flex"/>
+          <div className="flex items-center justify-between">
           <h1 className="text-md font-bold px-1 mt-2 dark:text-white">Uploaded Material</h1>
+          { 
+            removedFileIdsArray.length > 0  && 
+            <Button
+            className="animate-in fade-in-0 duration-700 slide-in-from-top-1"
+            size="sm"
+            variant="outline"
+            type="button"
+            onClick={()=>restoreRemovedCourseFile()}
+            >
+              <RotateCcw />
+          </Button>
+         }
+          </div>
         {courseContentFiles.map((file,index)=>{
           const fileError = form.formState.errors?.courseFiles?.[index]?.message;
           return <FileItem key={index} file={file} error={fileError} newlyUploaded onRemoveClick={()=>removeCourseFile(index)} />

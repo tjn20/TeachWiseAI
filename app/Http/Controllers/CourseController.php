@@ -155,14 +155,13 @@ class CourseController extends Controller
         $data = $request->validated();
         $instructor = $course->instructor;
         
-        // sending an event only when editing the students or course files
         $batchJobs = [];
         $courseMaterialFiles = [];
         if(isset($request['courseFiles']))
         {
             if($request->hasFile('courseFiles.files'))    
             {
-                $directory =  File::where('course_id',$course->id)->first();//To fix later
+                $directory =  File::where('course_id',$course->id)->first();
                 preg_match('/^([^\/]+\/[^\/]+)/', $directory->path, $matches);
                 $directory = $matches[1];
 
@@ -219,7 +218,6 @@ class CourseController extends Controller
         $course->update([
             'locked_at'=>now()
         ]);
-        // Send notification to students
         broadcast(new CourseLocked("course will be available again shortly!",$course));
         Bus::batch($batchJobs)
             ->catch(function (Batch $batch, Throwable $e) use ($course,$courseMaterialFiles) {

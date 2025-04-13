@@ -30,7 +30,7 @@ export function ThemeProvider({
         .matches
         ? "dark"
         : "light"
-
+      setTheme(systemTheme)      
       root.classList.add(systemTheme)
       return
     }

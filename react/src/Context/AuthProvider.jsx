@@ -18,7 +18,7 @@ import axiosClient from "../axios";
 
 const AuthContext = createContext(undefined);
 
-export default function AuthProvider({children,emailVerification=false,allowAbort=true})
+export default function AuthProvider({children,emailVerification=false})
 {
     const [authenticationState,setAuthenticationState] = useState({
         user:null,
@@ -26,7 +26,6 @@ export default function AuthProvider({children,emailVerification=false,allowAbor
         verified:null
     })
     const [loading,setLoading] = useState(true)
-    const controller = new AbortController();
     const user = authenticationState.user;
     const authenticated = authenticationState.authenticated;
     const verified = authenticationState.verified;
@@ -39,7 +38,7 @@ export default function AuthProvider({children,emailVerification=false,allowAbor
         return new Promise(async (resolve,reject)=>{
             try
             {
-                await axiosClient.post('/login',credentials,)
+                await axiosClient.post('/login',credentials)
                 const user = await revalidate()
 
                 return resolve({emailVerification:false,signedIn:true,user})
@@ -47,7 +46,7 @@ export default function AuthProvider({children,emailVerification=false,allowAbor
             }
             catch(error)
             {
-                if(error.response?.status === 409)
+                if(error.response?.status === 409 && emailVerification) // added email verification
                 {
                     setAuthenticationState({user:null,authenticated:true,verified:false})
                     return resolve({emailVerification:true,signedIn:false})
@@ -72,7 +71,6 @@ export default function AuthProvider({children,emailVerification=false,allowAbor
                 }
                 
                 const user = await revalidate()
-
                 return resolve({emailVerification:false,signedIn:true,user})
             }
             catch(error)
