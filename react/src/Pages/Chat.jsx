@@ -3,17 +3,15 @@ import MessageItem from "@/components/app/MessageItem"
 import MessageInput from "@/components/app/MessageInput"
 import { useCallback, useEffect, useRef, useState } from "react"
 import axiosClient from "../axios"
-import { useNavigate, useParams } from "react-router-dom"
 import {v4 as uuid} from "uuid"
-import { SidebarProvider,SidebarTrigger,SidebarInset } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/app/AppSideBar"
-import { Separator } from "@/components/ui/separator"
 import echo from "../echo.js"
-import { Loader } from "lucide-react"
+import { ArrowDown, Loader } from "lucide-react"
 import { toast } from "sonner"
+import { Button } from "../../components/ui/button"
 
 export default function Chat({
     conversationId,
+    conversation,
     messages : conversationMessages,
     nextCursor : InitialNextCursor,
     handleSessionTimeOut
@@ -21,7 +19,6 @@ export default function Chat({
     const [messages,setMessages] = useState([])
     const [isMessageSending, setIsMessageSending] = useState(false)
     const [isMessageAdded,setIsMessageAdded] = useState(false)
-    const {navigate} = useNavigate()
     const lastMessageRef = useRef(null);
     const aiLoadingMessageIdRef = useRef(null);;
     const [isLoadingEarlier, setIsLoadingEarlier] = useState(false);
@@ -29,13 +26,17 @@ export default function Chat({
     const messagesContainerRef = useRef(null)
     const loadMoreIntersect = useRef(null)
     const [scrollYAtFetch, setScrollYAtFetch] = useState(0);
+    const [showScrollButton,setShowScrollButton] = useState(false)
     const setRef = useCallback((node) => {
         lastMessageRef.current = node; 
       }, [])
     
     useEffect(()=>{
         if(conversationMessages)
+        {
             setMessages(conversationMessages)
+        }    
+            
     },[conversationMessages])  
 
     useEffect(()=>{
@@ -58,6 +59,14 @@ export default function Chat({
         return ()=> {
             observer.disconnect()}
     },[messages])
+
+    useEffect(() => {
+        const container = messagesContainerRef.current;
+        if (!container) return;
+      
+        container.addEventListener('scroll', handleScroll);
+        return () => container.removeEventListener('scroll', handleScroll);
+      }, []);
 
     function loadMessages()
     {
@@ -139,7 +148,7 @@ export default function Chat({
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const a = document.createElement("a");
             a.href = url;
-            a.download = "document.pdf";
+            a.download = `${conversation.course_title}.pdf`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -187,7 +196,23 @@ export default function Chat({
         });
         setIsMessageAdded(false)
 
-    }, [messages]); 
+    }, [messages]);
+
+    const handleScroll = () => {
+        const container = messagesContainerRef.current;
+        const isAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 10;
+        setShowScrollButton(!isAtBottom);
+    }
+    
+    const scrollToLastMessage = () => {
+        const container = messagesContainerRef.current;
+        if (!container) return;
+    
+        container.scrollTo({
+          top: container.scrollHeight,
+          behavior: 'smooth',
+        });
+    }
     
   return (
     <>  
@@ -201,7 +226,7 @@ export default function Chat({
             </div>
         </div>
 
-        <MessageInput conversationId={conversationId} onMessageSend={onMessageSend} isMessageSending={isMessageSending}/>  
+        <MessageInput conversationId={conversationId} onScrollClick={()=>scrollToLastMessage()} showScrollButton={showScrollButton} onMessageSend={onMessageSend} isMessageSending={isMessageSending}/>  
     </>
   )
 }

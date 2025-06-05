@@ -3,7 +3,6 @@ from utils.mongodbdbytestore import MongoDBByteStore
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.retrievers.multi_vector import MultiVectorRetriever
 import os
-from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
 def get_vectorDB(*,course):
     target_folder = os.path.join(os.path.dirname(__file__), "..", 'db')
@@ -23,18 +22,9 @@ def get_retriever(*,course):
         search_type="mmr",
         )   
 
-""" def get_llm():
-    return ChatGroq(temperature=0.5, model="llama-3.3-70b-versatile",max_tokens=6000)
-
-def get_multimodal_llm():
-    return ChatGroq(temperature=0.5, model="llama-3.2-90b-vision-preview",max_tokens=6000) """
-
-
 def get_llm():
     return ChatOpenAI(temperature=0.5, model="gpt-4o-mini",max_tokens=6000)
 
-""" def get_llm():
-    return ChatGroq(temperature=0.5, model="llama-3.3-70b-versatile",max_tokens=6000) """
 
 def get_multimodal_llm():
     return ChatOpenAI(temperature=0.5, model="gpt-4o-mini",max_tokens=6000)

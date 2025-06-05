@@ -73,6 +73,7 @@ export default function RegisterForm() {
         const emailUsername = fields.email.split('@')[0]
         return /^[A-Za-z.]+$/.test(emailUsername)
       }
+      return true
     },{
       message:"The username may only contain letters and periods.",
       path:["email"]

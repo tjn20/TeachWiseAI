@@ -73,7 +73,8 @@ export default function ChatLayout() {
     const courseLocked = on('course.locked', (course) => {
 
         const currentCourse = courses.find(c => c.id === course.id);
-        if (currentCourse) {
+        console.log("after current ",conversationId)
+        if (currentCourse.url === conversationId) {
             navigate("/");
         } else {
             setCourses(prev => prev.filter(c => c.id !== course.id));
@@ -103,12 +104,12 @@ export default function ChatLayout() {
     } catch (error) {
       if (axios.isCancel(error)) return 
       handleSessionTimeOut(error)
-      console.log(error)
+      toast.info("Something Went Wrong!")
     }
   };
 
   const handleClearConversation = (conversation) => {
-    if (isConversationBeingCleared || conversationData?.messages.length < 1) return
+    if (isConversationBeingCleared) return
     const previousMessages = conversationData.messages
   
     setIsConversationBeingCleared(true)
@@ -168,7 +169,7 @@ export default function ChatLayout() {
             </BreadcrumbList>
           </Breadcrumb>
         </header>
-        {conversationData ? <Chat nextCursor={conversationData.nextCursor || null} messages={conversationData.messages} conversationId={conversationId} handleSessionTimeOut={handleSessionTimeOut}/>: (<div className="self-center place-self-center flex-1 w-full flex items-center justify-center gap-1">
+        {conversationData ? <Chat nextCursor={conversationData.nextCursor || null} messages={conversationData.messages} conversation={conversationData} conversationId={conversationId} handleSessionTimeOut={handleSessionTimeOut}/>: (<div className="self-center place-self-center flex-1 w-full flex items-center justify-center gap-1">
           <span className="loading loading-bars loading-xs"></span>
           <span className="loading loading-bars loading-sm"></span>
           <span className="loading loading-bars loading-md"></span>

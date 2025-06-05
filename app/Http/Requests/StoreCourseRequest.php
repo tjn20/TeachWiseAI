@@ -24,7 +24,7 @@ class StoreCourseRequest extends FormRequest
      */
     public function rules(): array
     {
-        $MAX_COURSE_FILE_SIZE = 20 * 1024 * 1024;
+        $MAX_COURSE_FILE_SIZE = 3 * 1024 * 1024;
         $MAX_STUDENT_FILE_SIZE = 7 * 1024 * 1024;
 
         $user = Auth::user();

@@ -40,6 +40,6 @@ export default function Code({ node, inline, className, children, ...props }) {
         </SyntaxHighlighter>
       </div> )
        : (
-            <code className="bg-gray-200 px-1 rounded-sm text-sm">{children}</code> // Smaller text for inline code
+            <code className="bg-gray-200 px-1 rounded-sm text-sm dark:text-black">{children}</code> // Smaller text for inline code
         );
 }

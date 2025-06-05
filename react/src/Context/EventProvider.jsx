@@ -36,7 +36,7 @@ export default function EventProvider({children}) {
         {    
                 echo.private(`course.created.instructor.${user.id}`)
                 .listen('CourseCreated',({course})=>{ 
-                    toast.success(`${course.title} has been created!`)
+                    toast.success(`${course.title} Course has been created!`)
                     emit("course.created", course);        
                 })
                 .error(error=>{
@@ -45,7 +45,7 @@ export default function EventProvider({children}) {
 
                 echo.private(`course.edited.instructor.${user.id}`)
                 .listen('CourseEdited',({course})=>{ 
-                    toast.success(`${course.title} has been updated!`)
+                    toast.success(`${course.title} Course has been updated!`)
                     emit("course.edited", course);        
                 })
                 .error(error=>{

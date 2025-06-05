@@ -48,8 +48,8 @@ export function NavCourses({
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <SidebarMenuSub>
-                  {item.items?.map((subItem,index) => (
-                    <SidebarMenuSubItem key={index} className={`flex items-center justify-between hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-lg h-8 ${subItem.id === activeCourseId && "bg-sidebar-accent text-sidebar-accent-foreground"}`}>
+                  {item.items?.map((subItem) => (
+                    <SidebarMenuSubItem key={subItem.url} className={`flex items-center justify-between hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-lg h-8 ${subItem.id === activeCourseId && "bg-sidebar-accent text-sidebar-accent-foreground"}`}>
                       <SidebarMenuSubButton asChild className="flex-1 hover:bg-none h-full">
                         {<Link   to={subItem.url && `/chat/${subItem.url}`}> 
                           <span>{subItem.title}</span>

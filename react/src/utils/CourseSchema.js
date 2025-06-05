@@ -1,6 +1,6 @@
 import {z} from "zod"
 
-export const COURSE_MATERIAL_MAX_FILE_SIZE = 2 * 1024 * 1024
+export const COURSE_MATERIAL_MAX_FILE_SIZE = 3 * 1024 * 1024
 export const COURSE_MATERIAL_ALLOWED_FILE_TYPES = ["application/pdf"]
 
 export const courseSchema = z.object({
@@ -29,12 +29,8 @@ export const courseSchema = z.object({
       file: z.instanceof(File).refine((file) =>file.type === "text/csv", {
         message: "Only CSV files are allowed.",
       })
-      .refine((file) => file.size < 7 * 1024 * 1024, { 
+      .refine((file) => file.size < 2 * 1024 * 1024, { 
         message: "File size must be less than 2MB.",
       }).nullable() 
-    })/* .refine((data) => { 
-      return data.file ? true:false || data.studentsId.length > 0;
-    }, {
-      message: "Either student IDs or a file must be provided.",
-    }) */
+    })
   })
