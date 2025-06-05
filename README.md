@@ -1,5 +1,9 @@
 # TeachWiseAI
 
+![Image](https://github.com/user-attachments/assets/e5d6cb87-b2f0-4389-abee-e583a8e2e8d9)
+![Image](https://github.com/user-attachments/assets/d2d9668f-8057-47f5-a7d6-535466938b4b)
+
+![Image](https://github.com/user-attachments/assets/a18fbdd4-a8dc-4d23-b6d5-6eea55aabdb9)
 ## Overview  
 We aim to develop an AI-powered course assistance web application that enhances the learning experience for students while reducing the workload for instructors. By leveraging AI, the platform provides students with real-time, intelligent responses to course-related queries. It also supports instructors by managing courses, enrolling students, and facilitating interactions with course materials.
 
@@ -22,7 +26,7 @@ Built as a **Single Page Application (SPA)** with real-time update capabilities,
 
 ## Tech used
 
-React.js, TailwindCSS, Laravel, Spatie, React Hook Form, Flask, LangChain, Zod, Axios, MySQL, MongoDB
+React.js, TailwindCSS, Laravel, Spatie, React Hook Form, Flask, LangChain, Zod, Axios, MySQL, MongoDB, ShadCN
 
 ---
 
